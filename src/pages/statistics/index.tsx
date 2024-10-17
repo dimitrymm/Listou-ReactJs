@@ -2,6 +2,14 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import ProductService from "@/services/ProductService";
 import FormatDate from "@/utils/FormatDate";
 import { TrashIcon } from "@radix-ui/react-icons";
@@ -35,12 +43,13 @@ export default function Statistics() {
   useEffect(() => {
     loadProducts();
   }, [loadProducts]);
+  console.log();
 
   return (
     <>
       <Header />
-      <main className="flex lg:flex-row  justify-between sm:mx-72 mx-4 ">
-        <Card className="max-w-2xl w-full bg-gray-300 ">
+      <main className="flex lg:flex-row  sm:mx-72 mx-4 ">
+        <Card className="max-w-lg w-full bg-gray-300 ">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">
               Listagem de produtos
@@ -75,6 +84,20 @@ export default function Statistics() {
           ))}
         </Card>
       </main>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+
+          <PaginationItem>
+            <PaginationLink>1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
       <Footer />
     </>
   );

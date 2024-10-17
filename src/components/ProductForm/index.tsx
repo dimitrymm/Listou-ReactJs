@@ -1,3 +1,5 @@
+"use client";
+
 import DataPicker from "@/components/DataPicker";
 
 import { Button } from "@/components/ui/button";
@@ -17,13 +19,84 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import z, { type date } from "zod";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import FormatDate from "@/utils/FormatDate";
+import CategoriesService from "@/services/CategoriesService";
+import ProductService from "@/services/ProductService";
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(3, {
+      message: "Nome do Produto Precisa ter pelo menos 3 caracteres.",
+    })
+    .max(15),
+  category_name: z.string({
+    required_error: "Selecione uma categoria.",
+  }),
+  quantity: z.number({ required_error: "Insira uma quantidade." }),
+  date: z.date({
+    required_error: "Data da compra é requirido.",
+  }),
+});
+
+interface categories {
+  id: string;
+  name: string;
+}
 
 export default function ProdutctForm() {
   const [productName, setProductName] = useState<string>("");
   const [productDate, setProductDate] = useState<string>("");
   const [productQuantity, setProductQuantity] = useState<string>("");
   const [productCategoryName, setProductCategoryName] = useState<string>("");
+  const [categories, setCategories] = useState<categories[]>([]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const categoriesList = await CategoriesService.listCategories();
+        setCategories(categoriesList);
+      } catch (error) {
+        console.log("Erro loadCategories", error);
+      }
+    }
+    loadCategories();
+  }, []);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      quantity: 1,
+    },
+  });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const product = {
+        name: values.name,
+        category_id: values.category_name,
+        quantity: values.quantity,
+        date: values.date,
+      };
+      await ProductService.createProduct(product);
+      console.log(product);
+    } catch (error) {
+      console.log("Erro no cadastro de produto", error);
+    }
+  }
   return (
     <>
       <Card className="max-w-2xl w-full bg-gray-300 ">
@@ -32,7 +105,83 @@ export default function ProdutctForm() {
           <span>Que produto comprou hoje?</span>
         </CardHeader>
         <CardContent>
-          <form>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Produto</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Nome do Produto" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Produto que deseja Inserir
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-between gap-4">
+                <FormField
+                  control={form.control}
+                  name="quantity"
+                  render={({ field }) => (
+                    <FormItem className="w-1/4">
+                      <FormLabel>Quantidade</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="Qtd" {...field} />
+                      </FormControl>
+                      <FormDescription>Quantos?</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="category_name"
+                  render={({ field }) => (
+                    <FormItem className="w-2/4">
+                      <FormLabel>Categoria</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione" />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Data da Compra</FormLabel>
+                    <DataPicker field={field} />
+                  </FormItem>
+                )}
+              />
+
+              <CardFooter className="flex justify-between">
+                <Button variant={"outline"}>Cancelar</Button>
+                <Button type="submit">Adicionar</Button>
+              </CardFooter>
+            </form>
+          </Form>
+
+          {/* <form>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Nome</Label>
@@ -71,12 +220,8 @@ export default function ProdutctForm() {
                 </Select>
               </div>
             </div>
-          </form>
+          </form> */}
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant={"outline"}>Cancelar</Button>
-          <Button>Adicionar</Button>
-        </CardFooter>
       </Card>
     </>
   );

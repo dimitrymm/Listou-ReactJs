@@ -6,8 +6,9 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { Calendar } from "../ui/calendar";
+import { pt, ptBR } from "date-fns/locale";
 
-export default function DataPicker() {
+export default function DataPicker({ field }: any) {
   const [date, setDate] = useState<Date>();
   return (
     <Popover>
@@ -16,18 +17,26 @@ export default function DataPicker() {
           variant={"outline"}
           className={cn(
             "w-[240px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            !field.value && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Escolha uma Data</span>}
+          {field.value ? (
+            format(field.value.toString(), "PPP", { locale: ptBR })
+          ) : (
+            <span>Escolha uma Data</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0 backdrop-blur-sm" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={setDate}
+          locale={ptBR}
+          selected={field.value}
+          onSelect={field.onChange}
+          disabled={(date) =>
+            date > new Date() || date < new Date("1900-01-01")
+          }
           initialFocus
         />
       </PopoverContent>

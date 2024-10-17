@@ -47,7 +47,7 @@ class HttpClient {
     const headers = new Headers();
 
     if (options.body) {
-      headers.append("Content-Type", "Application");
+      headers.append("Content-Type", "application/json");
     }
     if (options.headers) {
       Object.entries(options.headers).forEach(([name, value]) => {
@@ -62,6 +62,7 @@ class HttpClient {
     let responseBody = null;
 
     const contentType = response.headers.get("Content-Type");
+
     if (contentType?.includes("application/json")) {
       responseBody = await response.json();
     }

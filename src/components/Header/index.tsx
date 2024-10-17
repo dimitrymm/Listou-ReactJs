@@ -1,13 +1,18 @@
-import { HomeIcon, SlashIcon } from "@radix-ui/react-icons";
-import { Separator } from "@radix-ui/react-separator";
+import {
+  BackpackIcon,
+  BarChartIcon,
+  HomeIcon,
+  SlashIcon,
+} from "@radix-ui/react-icons";
+
 import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
 import { Link } from "react-router-dom";
+import { Separator } from "../ui/separator";
 
 export default function Header() {
   return (
@@ -15,30 +20,28 @@ export default function Header() {
       <Breadcrumb className="mb-3">
         <BreadcrumbList className="">
           <BreadcrumbItem>
-            <BreadcrumbLink className="text-base flex items-center ">
-              <HomeIcon className="mr-1" />
-              <Link to="/">Home</Link>
-            </BreadcrumbLink>
+            <HomeIcon className="" />
+            <Link className="text-base flex items-center " to="/">
+              Home
+            </Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator>
             <SlashIcon />
           </BreadcrumbSeparator>
           <BreadcrumbItem>
-            <BreadcrumbLink>
-              <Link to="/products">Produtos</Link>
-            </BreadcrumbLink>
+            <BackpackIcon />
+            <Link to="/products">Produtos</Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator>
             <SlashIcon />
           </BreadcrumbSeparator>
           <BreadcrumbItem>
-            <BreadcrumbLink>
-              <Link to="/statistics">Estatisticas</Link>
-            </BreadcrumbLink>
+            <BarChartIcon />
+            <Link to="/statistics">Estatisticas</Link>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <Separator />
+      <Separator className="bg-[#020817]" />
     </header>
   );
 }

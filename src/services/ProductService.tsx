@@ -1,5 +1,11 @@
 import HttpClient from "./utils/HttpClient";
 
+// interface Product {
+//   name: string;
+//   quantity: number;
+//   date: any;
+//   category_id: string;
+// }
 class ProductService {
   httpClient: HttpClient;
 
@@ -8,6 +14,9 @@ class ProductService {
   }
   listProducts() {
     return this.httpClient.get("/products");
+  }
+  createProduct(product: any) {
+    return this.httpClient.post("/products", { body: product });
   }
 }
 
