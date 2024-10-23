@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -22,7 +21,7 @@ import {
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import z, { type date } from "zod";
+import z from "zod";
 import {
   Form,
   FormControl,
@@ -32,9 +31,10 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import FormatDate from "@/utils/FormatDate";
 import CategoriesService from "@/services/CategoriesService";
 import ProductService from "@/services/ProductService";
+import { useToast } from "@/hooks/use-toast";
+import FormatDate from "@/utils/FormatDate";
 
 const formSchema = z.object({
   name: z
@@ -46,7 +46,13 @@ const formSchema = z.object({
   category_name: z.string({
     required_error: "Selecione uma categoria.",
   }),
-  quantity: z.number({ required_error: "Insira uma quantidade." }),
+  quantity: z.coerce
+    .number({
+      required_error: "Insira uma quantidade.",
+    })
+    .min(1, {
+      message: "Mínimo 1 unidade",
+    }),
   date: z.date({
     required_error: "Data da compra é requirido.",
   }),
@@ -58,10 +64,7 @@ interface categories {
 }
 
 export default function ProdutctForm() {
-  const [productName, setProductName] = useState<string>("");
-  const [productDate, setProductDate] = useState<string>("");
-  const [productQuantity, setProductQuantity] = useState<string>("");
-  const [productCategoryName, setProductCategoryName] = useState<string>("");
+  const { toast } = useToast();
   const [categories, setCategories] = useState<categories[]>([]);
 
   useEffect(() => {
@@ -80,20 +83,28 @@ export default function ProdutctForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      quantity: 1,
+      quantity: 0,
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const product = {
         name: values.name,
-        category_id: values.category_name,
-        quantity: values.quantity,
         date: values.date,
+        quantity: values.quantity,
+        category_id: values.category_name,
       };
+
       await ProductService.createProduct(product);
-      console.log(product);
+      toast({
+        title: "Produto Adicionado",
+        description: `Comprou:${product.name} em:${product.date}`,
+      });
     } catch (error) {
+      toast({
+        title: "Erro no cadastro de produto",
+        variant: "destructive",
+      });
       console.log("Erro no cadastro de produto", error);
     }
   }

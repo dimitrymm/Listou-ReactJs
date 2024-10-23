@@ -59,6 +59,7 @@ class HttpClient {
       body: JSON.stringify(options.body),
       headers,
     });
+
     let responseBody = null;
 
     const contentType = response.headers.get("Content-Type");
