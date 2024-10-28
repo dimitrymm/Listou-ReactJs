@@ -2,7 +2,13 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Pagination,
@@ -39,7 +45,7 @@ export default function Statistics() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [month, setMonth] = useState<number[]>([]);
-  const [searchMonth, setSearchMonth] = useState();
+  const [searchMonth, setSearchMonth] = useState<string>("");
   const [productBeingDeleted, setProductBeingDeleted] = useState<Product>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,15 +65,26 @@ export default function Statistics() {
 
   function getMonth(products: Product[]) {}
 
-  function listOfProductsByMonth(products: Product[], month: string) {
+  function listOfProductsByMonth(products: Product[], searchDate: string) {
     const monthsList = products.map((product) => {
       const data = new Date(product.date);
       return data.getMonth() + 1;
     });
 
-    console.log("Lista de produtos", products);
     console.log("Lista de Meses", monthsList);
-    return products.filter((product) => {});
+    return products.filter((product) => {
+      const formattedDate = FormatDate(product.date);
+      console.log("formattedDate", formattedDate);
+
+      if (!formattedDate) {
+        console.log(`Invalid format of date:${product.name}`);
+        return false;
+      }
+      const [year, month, day] = formattedDate.split("/");
+      console.log("month", month);
+
+      return Number(month) === Number(searchDate);
+    });
   }
 
   useEffect(() => {
@@ -75,22 +92,22 @@ export default function Statistics() {
   }, [loadProducts]);
 
   useEffect(() => {
+    console.log(searchMonth);
+
     if (products.length > 0) {
-      listOfProductsByMonth(products, month);
+      setFilteredProducts(listOfProductsByMonth(products, searchMonth));
     }
-  }, [products]);
+  }, [products, searchMonth]);
 
   function handleTryAgain() {
     loadProducts();
   }
 
-  function handleSearchMonth(event) {
-    console.log("Mês Selecionado :", event.target.value);
-  }
-
   function handleDeleteProduct(product) {
     setProductBeingDeleted(product);
   }
+
+  console.log("Produtos filtrados:", filteredProducts);
 
   async function handleConfirmDeleteProduct() {
     try {
@@ -122,11 +139,11 @@ export default function Statistics() {
   return (
     <>
       <Header />
-      <div className="flex justify-center">
+      <div className="flex md:flex-row flex-col justify-center">
         <main className="flex lg:flex-row lg:mx-6 mx-4 ">
-          <Card className="max-w-2xl w-full bg-gray-300 ">
+          <Card className="max-w-3xl w-full bg-gray-300 ">
             <CardHeader>
-              <CardTitle className="text-2xl font-semibold">
+              <CardTitle className="text-2xl text-center font-semibold">
                 Listagem de produtos
               </CardTitle>
             </CardHeader>
@@ -170,69 +187,75 @@ export default function Statistics() {
           </Card>
         </main>
         <aside className="flex lg:flex-row  lg:mx-6 mx-4 ">
-          <Card className="max-w-lg w-full bg-gray-300 ">
+          <Card className="max-w-2xl w-full bg-gray-300 ">
             <CardHeader>
-              <CardTitle className="text-2xl font-semibold">
+              <CardTitle className="text-2xl text-center font-semibold">
                 Pesquise Por Mês
               </CardTitle>
-              <Select value={searchMonth} onValueChange={handleSearchMonth}>
+              <Select value={searchMonth} onValueChange={setSearchMonth}>
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o Mês:" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Janeiro">Janeiro</SelectItem>
-                    <SelectItem value="Fevereiro">Fevereiro</SelectItem>
-                    <SelectItem value="Março">Março</SelectItem>
-                    <SelectItem value="Abril">Abril</SelectItem>
-                    <SelectItem value="Maio">Maio</SelectItem>
-                    <SelectItem value="Junho">Junho</SelectItem>
-                    <SelectItem value="Julho">Julho</SelectItem>
-                    <SelectItem value="Agosto">Agosto</SelectItem>
-                    <SelectItem value="Setembro">Setembro</SelectItem>
-                    <SelectItem value="Outubro">Outubro</SelectItem>
-                    <SelectItem value="Novembro">Novembro</SelectItem>
-                    <SelectItem value="Dezembro">Dezembro</SelectItem>
+                    <SelectItem value="01">Janeiro</SelectItem>
+                    <SelectItem value="02">Fevereiro</SelectItem>
+                    <SelectItem value="03">Março</SelectItem>
+                    <SelectItem value="04">Abril</SelectItem>
+                    <SelectItem value="05">Maio</SelectItem>
+                    <SelectItem value="06">Junho</SelectItem>
+                    <SelectItem value="07">Julho</SelectItem>
+                    <SelectItem value="08">Agosto</SelectItem>
+                    <SelectItem value="09">Setembro</SelectItem>
+                    <SelectItem value="10">Outubro</SelectItem>
+                    <SelectItem value="11">Novembro</SelectItem>
+                    <SelectItem value="12">Dezembro</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </CardHeader>
-            {products?.map((product) => (
-              <CardContent
-                key={product.id}
-                className="p-4 border border-black rounded-md hover:bg-indigo-400"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
+            {filteredProducts.length <= 0 ? (
+              <CardDescription className="text-center">
+                Não existem produtos neste mês!
+              </CardDescription>
+            ) : (
+              filteredProducts?.map((product) => (
+                <CardContent
+                  key={product.id}
+                  className="p-4 border border-black rounded-md hover:bg-indigo-400"
+                >
+                  <div className="flex items-center gap-4 justify-between">
                     <div>
-                      <strong className="mr-4">{product.name}</strong>
-                      <span className="text-lg font-bold text-indigo-700 uppercase">
-                        {product.category_name}
-                      </span>
+                      <div>
+                        <strong className="mr-4">{product.name}</strong>
+                        <span className="text-lg font-bold text-indigo-700 uppercase">
+                          {product.category_name}
+                        </span>
+                      </div>
+                      <div>
+                        <span>{product.quantity}Un. </span>
+                        <span>Em: {FormatDate(product.date)}</span>
+                      </div>
                     </div>
                     <div>
-                      <span>{product.quantity}Un. </span>
-                      <span>Em: {FormatDate(product.date)}</span>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            onClick={() => handleDeleteProduct(product)}
+                            variant={"destructive"}
+                          >
+                            <TrashIcon className="size-6" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-xs">
+                          <Modal onConfirm={handleConfirmDeleteProduct} />
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </div>
-                  <div>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          onClick={() => handleDeleteProduct(product)}
-                          variant={"destructive"}
-                        >
-                          <TrashIcon className="size-6" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-xs">
-                        <Modal onConfirm={handleConfirmDeleteProduct} />
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </div>
-              </CardContent>
-            ))}
+                </CardContent>
+              ))
+            )}
           </Card>
         </aside>
       </div>
