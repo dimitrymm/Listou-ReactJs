@@ -31,7 +31,6 @@ import ProductService from "@/services/ProductService";
 import FormatDate from "@/utils/FormatDate";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useState } from "react";
-import { date } from "zod";
 
 interface Product {
   id: number;
@@ -43,7 +42,6 @@ interface Product {
 export default function Statistics() {
   const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [month, setMonth] = useState<number[]>([]);
   const [searchMonth, setSearchMonth] = useState<string>("");
   const [productBeingDeleted, setProductBeingDeleted] = useState<Product>();

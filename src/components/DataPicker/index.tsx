@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Popover, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
@@ -6,10 +5,9 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { Calendar } from "../ui/calendar";
-import { pt, ptBR } from "date-fns/locale";
+import { ptBR } from "date-fns/locale";
 
 export default function DataPicker({ field }: any) {
-  const [date, setDate] = useState<Date>();
   return (
     <Popover>
       <PopoverTrigger asChild>

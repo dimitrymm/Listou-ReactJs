@@ -9,7 +9,7 @@ class ProductService {
   httpClient: HttpClient;
 
   constructor() {
-    this.httpClient = new HttpClient("https://shp-api.vercel.app/");
+    this.httpClient = new HttpClient("http://localhost:3001");
   }
   listProducts() {
     return this.httpClient.get("/products");
