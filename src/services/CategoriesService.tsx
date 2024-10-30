@@ -8,7 +8,7 @@ class CategoriesService {
   listCategories() {
     return this.httpClient.get("/categories");
   }
-  createCategory(category) {
+  createCategory(category: Category) {
     return this.httpClient.get("/categories", { body: category });
   }
 }

@@ -17,7 +17,7 @@ class ProductService {
   createProduct(product: Product) {
     return this.httpClient.post("/products", { body: product });
   }
-  deleteProduct(id) {
+  deleteProduct(id: number | undefined) {
     return this.httpClient.delete(`/products/${id}`);
   }
 }

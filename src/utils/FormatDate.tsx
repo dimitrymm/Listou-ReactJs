@@ -1,4 +1,11 @@
-export default function FormatDate(dateString: String) {
+export default function FormatDate(dateInput: string | Date) {
+  let dateString: string;
+  if (dateInput instanceof Date) {
+    dateString = dateInput.toISOString().split("T")[0];
+  } else {
+    dateString = dateInput;
+  }
+
   const regex = /(\d{4})-(\d{2})-(\d{2})/;
   const match = dateString.match(regex);
   if (match) {

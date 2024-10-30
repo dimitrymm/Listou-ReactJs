@@ -95,7 +95,7 @@ export default function Statistics() {
     }
   }, [products, searchMonth]);
 
-  function handleDeleteProduct(product) {
+  function handleDeleteProduct(product: Product) {
     setProductBeingDeleted(product);
   }
 
