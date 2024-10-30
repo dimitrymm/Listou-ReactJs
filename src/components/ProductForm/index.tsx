@@ -34,7 +34,6 @@ import {
 import CategoriesService from "@/services/CategoriesService";
 import ProductService from "@/services/ProductService";
 import { useToast } from "@/hooks/use-toast";
-import FormatDate from "@/utils/FormatDate";
 
 const formSchema = z.object({
   name: z

@@ -1,16 +1,17 @@
 import { Button } from "../ui/button";
 import {
-  Dialog,
   DialogClose,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
-import { Popover, PopoverContent } from "../ui/popover";
 
-export default function Modal({ onConfirm }) {
+type ModalProps = {
+  onConfirm: () => void;
+};
+
+export default function Modal({ onConfirm }: ModalProps) {
   return (
     <>
       <DialogHeader>

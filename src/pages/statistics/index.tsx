@@ -45,19 +45,19 @@ export default function Statistics() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchMonth, setSearchMonth] = useState<string>("");
   const [productBeingDeleted, setProductBeingDeleted] = useState<Product>();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const loadProducts = useCallback(async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const productList = await ProductService.listProducts();
       setProducts(productList);
 
-      setIsLoading(false);
+      // setIsLoading(false);
     } catch (error) {
       console.log("Erro loadproducts", error);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   }, []);
 
@@ -77,7 +77,6 @@ export default function Statistics() {
         return false;
       }
       const [year, month, day] = formattedDate.split("/");
-      console.log("month", month);
 
       return Number(month) === Number(searchDate);
     });
