@@ -31,7 +31,6 @@ import ProductService from "@/services/ProductService";
 import FormatDate from "@/utils/FormatDate";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useState } from "react";
-import { date } from "zod";
 
 interface Product {
   id: number;
@@ -62,8 +61,6 @@ export default function Statistics() {
       setIsLoading(false);
     }
   }, []);
-
-  function getMonth(products: Product[]) {}
 
   function listOfProductsByMonth(products: Product[], searchDate: string) {
     const monthsList = products.map((product) => {
