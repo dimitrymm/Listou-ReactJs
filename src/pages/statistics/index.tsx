@@ -61,8 +61,6 @@ export default function Statistics() {
     }
   }, []);
 
-  function getMonth(products: Product[]) {}
-
   function listOfProductsByMonth(products: Product[], searchDate: string) {
     const monthsList = products.map((product) => {
       const data = new Date(product.date);
