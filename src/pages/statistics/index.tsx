@@ -42,7 +42,7 @@ interface Product {
 export default function Statistics() {
   const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
-  const [month, setMonth] = useState<number[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchMonth, setSearchMonth] = useState<string>("");
   const [productBeingDeleted, setProductBeingDeleted] = useState<Product>();
   const [isLoading, setIsLoading] = useState(false);
@@ -94,10 +94,6 @@ export default function Statistics() {
       setFilteredProducts(listOfProductsByMonth(products, searchMonth));
     }
   }, [products, searchMonth]);
-
-  function handleTryAgain() {
-    loadProducts();
-  }
 
   function handleDeleteProduct(product) {
     setProductBeingDeleted(product);
