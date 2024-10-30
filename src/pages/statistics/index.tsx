@@ -76,7 +76,7 @@ export default function Statistics() {
         console.log(`Invalid format of date:${product.name}`);
         return false;
       }
-      const [year, month, day] = formattedDate.split("/");
+      const [_year, month, _day] = formattedDate.split("/");
 
       return Number(month) === Number(searchDate);
     });
