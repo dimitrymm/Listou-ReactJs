@@ -34,7 +34,6 @@ import {
 import CategoriesService from "@/services/CategoriesService";
 import ProductService from "@/services/ProductService";
 import { useToast } from "@/hooks/use-toast";
-import Loader from "../Loader";
 
 const formSchema = z.object({
   name: z
