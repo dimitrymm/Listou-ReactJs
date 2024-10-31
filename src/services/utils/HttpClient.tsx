@@ -1,5 +1,4 @@
 import APIError from "@/errors/APIError";
-import delay from "@/utils/delay";
 
 interface MakeRequestOptions extends RequestOptions {
   method: "GET" | "POST" | "PUT" | "DELETE";
