@@ -1,4 +1,5 @@
 import APIError from "@/errors/APIError";
+import delay from "@/utils/delay";
 
 interface MakeRequestOptions extends RequestOptions {
   method: "GET" | "POST" | "PUT" | "DELETE";
@@ -44,6 +45,7 @@ class HttpClient {
   }
 
   async makeRequest(path: string, options: MakeRequestOptions) {
+    await delay(3000);
     const headers = new Headers();
 
     if (options.body) {
