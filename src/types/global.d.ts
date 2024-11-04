@@ -1,13 +1,13 @@
 declare global {
   type Product = {
-    id: number;
+    id?: number;
     name: string;
     quantity: number;
     date: Date;
-    category_name: string;
+    category_name?: string;
   };
   type Category = {
-    id: number;
+    id?: number;
     name: string;
   };
 }

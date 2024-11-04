@@ -1,15 +1,10 @@
 import HttpClient from "./utils/HttpClient";
-interface Product {
-  name: string;
-  quantity: number;
-  date: Date;
-  category_id: string;
-}
+
 class ProductService {
   httpClient: HttpClient;
 
   constructor() {
-    this.httpClient = new HttpClient("http://localhost:3001");
+    this.httpClient = new HttpClient("https://shp-api.vercel.app");
   }
   listProducts() {
     return this.httpClient.get("/products");

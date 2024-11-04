@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -18,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -41,7 +42,9 @@ const formSchema = z.object({
     .min(3, {
       message: "Nome do Produto Precisa ter pelo menos 3 caracteres.",
     })
-    .max(15),
+    .max(15, {
+      message: "Nome do Produto Precisa ter no maximo 15 caracteres.",
+    }),
   category_name: z.string({
     required_error: "Selecione uma categoria.",
   }),
@@ -57,29 +60,38 @@ const formSchema = z.object({
   }),
 });
 
-interface categories {
-  id: string;
-  name: string;
-}
+const formCategorySchema = z.object({
+  name: z
+    .string()
+    .min(3, {
+      message: "Nome do Produto Precisa ter pelo menos 3 caracteres.",
+    })
+    .max(15, {
+      message: "Nome do Produto Precisa ter no maximo 15 caracteres.",
+    }),
+});
 
 export default function ProdutctForm() {
   const { toast } = useToast();
-  const [categories, setCategories] = useState<categories[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
-  useEffect(() => {
-    async function loadCategories() {
-      try {
-        const categoriesList = await CategoriesService.listCategories();
-        setCategories(categoriesList);
-      } catch (error) {
-        console.log("Erro loadCategories", error);
-      } finally {
-        setIsLoadingCategories(false);
-      }
+  const loadCategories = useCallback(async () => {
+    try {
+      setIsLoadingCategories(true);
+      const categoriesList = await CategoriesService.listCategories();
+      setCategories(categoriesList);
+      setIsLoadingCategories(false);
+    } catch (error) {
+      console.log("Erro loadCategories", error);
+    } finally {
+      setIsLoadingCategories(false);
     }
-    loadCategories();
   }, []);
+
+  useEffect(() => {
+    loadCategories();
+  }, [loadCategories]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -88,6 +100,13 @@ export default function ProdutctForm() {
       quantity: 0,
     },
   });
+  const categoryForm = useForm<z.infer<typeof formCategorySchema>>({
+    resolver: zodResolver(formCategorySchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const product = {
@@ -100,11 +119,34 @@ export default function ProdutctForm() {
       await ProductService.createProduct(product);
       toast({
         title: "Produto Adicionado",
-        description: `Comprou:${product.name} em:${product.date}`,
+        description: `Comprou: ${product.name} em: ${new Date(
+          product.date
+        ).toLocaleDateString("pt-BR")}`,
+        color: "green",
       });
     } catch (error) {
       toast({
         title: "Erro no cadastro de produto",
+        variant: "destructive",
+      });
+      console.log("Erro no cadastro de produto", error);
+    }
+  }
+  async function onCategorySubmit(values: z.infer<typeof formCategorySchema>) {
+    try {
+      const category = {
+        name: values.name,
+      };
+
+      await CategoriesService.createCategory(category);
+      loadCategories();
+      toast({
+        title: "Categoria Adicionada",
+        description: "",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro no cadastro de categoria",
         variant: "destructive",
       });
       console.log("Erro no cadastro de produto", error);
@@ -115,7 +157,7 @@ export default function ProdutctForm() {
       <Card className="max-w-2xl w-full bg-gray-300 ">
         <CardHeader>
           <CardTitle>Adicionar Produto</CardTitle>
-          <span>Que produto comprou hoje?</span>
+          <CardDescription>Que produto comprou hoje?</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -209,6 +251,42 @@ export default function ProdutctForm() {
                   </FormItem>
                 )}
               />
+              <CardFooter className="flex justify-between">
+                <Button variant={"outline"}>Cancelar</Button>
+                <Button type="submit">Adicionar</Button>
+              </CardFooter>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+      {/* Form Category */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Categorias</CardTitle>
+          <CardDescription>Adicione a Categoria</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...categoryForm}>
+            <form
+              onSubmit={categoryForm.handleSubmit(onCategorySubmit)}
+              className=" space-y-6"
+            >
+              <FormField
+                control={categoryForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Categoria</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Nome da Categoria" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Categoria que deseja Inserir
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <CardFooter className="flex justify-between">
                 <Button variant={"outline"}>Cancelar</Button>
@@ -216,47 +294,6 @@ export default function ProdutctForm() {
               </CardFooter>
             </form>
           </Form>
-
-          {/* <form>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Nome</Label>
-                <Input
-                  value={productName}
-                  onChange={(event) => setProductName(event.target.value)}
-                  id="name"
-                  placeholder="Nome do Produto"
-                />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="qtd">Qtd</Label>
-                <Input
-                  value={productQuantity}
-                  onChange={(event) => setProductQuantity(event.target.value)}
-                  id="qtd"
-                  placeholder="Quantidade"
-                />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="date">Quando?</Label>
-                <DataPicker />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="category">Categoria</Label>
-                <Select>
-                  <SelectTrigger id="category">
-                    <SelectValue placeholder="Selecione" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="Frutas">Frutas</SelectItem>
-                    <SelectItem value="Legumes">Legumes</SelectItem>
-                    <SelectItem value="Verdut">Verdut</SelectItem>
-                    <SelectItem value="Doces">Doces</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </form> */}
         </CardContent>
       </Card>
     </>
