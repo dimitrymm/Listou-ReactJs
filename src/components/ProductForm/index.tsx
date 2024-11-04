@@ -230,7 +230,12 @@ export default function ProdutctForm() {
                           </SelectTrigger>
                           <SelectContent position="popper">
                             {categories.map((category) => (
-                              <SelectItem key={category.id} value={category.id}>
+                              <SelectItem
+                                key={category.id}
+                                value={
+                                  category.id ? category.id.toString() : ""
+                                }
+                              >
                                 {category.name}
                               </SelectItem>
                             ))}
