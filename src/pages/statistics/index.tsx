@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,7 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Pagination,
   PaginationContent,
@@ -29,7 +36,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import ProductService from "@/services/ProductService";
 import FormatDate from "@/utils/FormatDate";
-import { TrashIcon } from "@radix-ui/react-icons";
+import { CalendarIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useState } from "react";
 
 interface Product {
@@ -161,40 +168,92 @@ export default function Statistics() {
               </div>
             ) : (
               products?.map((product) => (
-                <CardContent
-                  key={product.id}
-                  className="p-4 border border-black rounded-md hover:bg-indigo-400"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div>
-                        <strong className="mr-4">{product.name}</strong>
-                        <span className="text-lg font-bold text-indigo-700 uppercase">
-                          {product.category_name}
-                        </span>
+                <div className="p-4 max-w-sm">
+                  <Card className="w-full">
+                    <CardHeader className="pb-2">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <CardTitle className="text-xl font-bold">
+                            {product.name}
+                          </CardTitle>
+                          <Badge variant="secondary" className="mt-2">
+                            {product.category_name}
+                          </Badge>
+                        </div>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              onClick={() => handleDeleteProduct(product)}
+                              variant={"ghost"}
+                              size="icon"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-100"
+                            >
+                              <TrashIcon className="size-6" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <Modal onConfirm={handleConfirmDeleteProduct} />
+                          </DialogContent>
+                        </Dialog>
                       </div>
-                      <div>
-                        <span>{product.quantity}Un. </span>
-                        <span>Em: {FormatDate(product.date)}</span>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-500">
+                            Quantidade:
+                          </span>
+                          <span className="font-medium">
+                            {product.quantity} unidades
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <CalendarIcon className="h-4 w-4 text-gray-500" />
+                            <span className="text-sm text-gray-500">Data:</span>
+                          </div>
+                          <span className="font-medium">
+                            {new Date(product.date).toLocaleDateString("pt-BR")}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            onClick={() => handleDeleteProduct(product)}
-                            variant={"destructive"}
-                          >
-                            <TrashIcon className="size-6" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-xs">
-                          <Modal onConfirm={handleConfirmDeleteProduct} />
-                        </DialogContent>
-                      </Dialog>
-                    </div>
-                  </div>
-                </CardContent>
+                    </CardContent>
+                  </Card>
+                </div>
+                // <CardContent
+                //   key={product.id}
+                //   className="p-4 border border-black rounded-md hover:bg-indigo-400"
+                // >
+                //   <div className="flex items-center justify-between">
+                //     <div>
+                //       <div>
+                //         <strong className="mr-4">{product.name}</strong>
+                //         <span className="text-lg font-bold text-indigo-700 uppercase">
+                //           {product.category_name}
+                //         </span>
+                //       </div>
+                //       <div>
+                //         <span>{product.quantity}Un. </span>
+                //         <span>Em: {FormatDate(product.date)}</span>
+                //       </div>
+                //     </div>
+                //     <div>
+                //       <Dialog>
+                //         <DialogTrigger asChild>
+                //           <Button
+                //             onClick={() => handleDeleteProduct(product)}
+                //             variant={"destructive"}
+                //           >
+                //             <TrashIcon className="size-6" />
+                //           </Button>
+                //         </DialogTrigger>
+                //         <DialogContent className="max-w-xs">
+                //           <Modal onConfirm={handleConfirmDeleteProduct} />
+                //         </DialogContent>
+                //       </Dialog>
+                //     </div>
+                //   </div>
+                // </CardContent>
               ))
             )}
           </Card>

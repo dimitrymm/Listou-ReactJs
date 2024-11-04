@@ -7,7 +7,7 @@ const sliderData = [
   {
     id: 2,
     title: "Carrot",
-    url: "https://images.unsplash.com/photo-1522187698837-ffbd4cf8c661",
+    url: "https://images.unsplash.com/photo-1448907503123-67254d59ca4f?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 3,
