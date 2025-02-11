@@ -2,27 +2,27 @@ const sliderData = [
   {
     id: 1,
     title: "Uma imagem de carne bovina crua.",
-    url: "https://tse2.mm.bing.net/th?id=OIP.W9u945z31XM-55FjFg4TXAHaE8&w=316&h=316&c=7",
+    url: "https://static.vecteezy.com/system/resources/previews/009/255/434/non_2x/raw-meat-rump-steak-isolated-on-white-background-photo.jpg",
   },
   {
     id: 2,
     title: "Uma imagem de carne bovina crua.",
-    url: "https://tse2.mm.bing.net/th?id=OIP.5qCPGNP4fFkTW57HMcxamgHaHa&w=474&h=474&c=7",
+    url: "https://aromasfenpal.com/wp-content/uploads/2022/09/aroma-a-frutos-rojos.jpg",
   },
   {
     id: 3,
     title: "Uma imagem de legumes frescos.",
-    url: "https://tse2.mm.bing.net/th?id=OIP.OiXfmg4W6dFV2NZ-Au5YLgHaHa&w=474&h=474&c=7",
+    url: "https://restaurantclicks.com/wp-content/uploads/2022/08/Types-of-Legumes.jpg",
   },
   {
     id: 4,
     title: "Uma imagem de frutas variadas.",
-    url: "https://tse2.mm.bing.net/th?id=OIP.KkYpfRGIfwr3yLlur9SgygHaE7&w=200&h=133&c=7",
+    url: "https://image.freepik.com/fotos-gratis/varios-legumes-frescos_23-2147681454.jpg",
   },
   {
     id: 5,
     title: "Uma imagem de um mercado de alimentos.",
-    url: "https://tse2.mm.bing.net/th?id=OIP.1g4LwMyt6RW3U9rBr7YIMgHaFr&w=200&h=153&c=7",
+    url: "https://thumbs.dreamstime.com/z/mercado-de-la-comida-55847561.jpg",
   },
 ];
 export default sliderData;
