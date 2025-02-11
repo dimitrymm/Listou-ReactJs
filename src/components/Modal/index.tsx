@@ -1,3 +1,4 @@
+import Spinner from "../Spinner";
 import { Button } from "../ui/button";
 import {
   DialogClose,
@@ -9,9 +10,10 @@ import {
 
 type ModalProps = {
   onConfirm: () => void;
+  isLoading: boolean;
 };
 
-export default function Modal({ onConfirm }: ModalProps) {
+export default function Modal({ onConfirm, isLoading }: ModalProps) {
   return (
     <>
       <DialogHeader>
@@ -27,8 +29,12 @@ export default function Modal({ onConfirm }: ModalProps) {
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button onClick={onConfirm} variant="destructive">
-                Deletar
+              <Button
+                onClick={onConfirm}
+                disabled={isLoading}
+                variant="destructive"
+              >
+                {isLoading ? <Spinner /> : <p>Deletar</p>}
               </Button>
             </DialogFooter>
           </div>

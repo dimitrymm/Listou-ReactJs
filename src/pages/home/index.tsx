@@ -12,43 +12,39 @@ import sliderData from "@/lib/sliderData";
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex md:flex-row flex-col">
-        <div className="max-w-xl m-4">
+      <main className="flex-grow p-4 md:flex items-center md:mx-52">
+        <div className="text-center md:text-left">
           <h1 className="text-7xl font-bold mb-3">Listou</h1>
           <span className="font-medium">
             Organize suas compras de forma simples e rápida
           </span>
-          <p className="mt-3">
+          <p className="mt-3 font-bold">
             "Com o Listou, você nunca mais esquecerá um item da sua lista.
             Adicione suas compras, acompanhe o histórico e facilite o
             planejamento mensal da sua família."
           </p>
         </div>
-        <aside className="m-auto max-w-3xl">
-          <Carousel className="w-full max-w-xl">
-            <CarouselContent>
-              {sliderData.map((item) => (
-                <CarouselItem key={item.id}>
-                  <div className="p-1 ">
-                    <Card>
-                      <CardContent className="">
-                        <img
-                          className="w-full h-full rounded-xl shadow-2xl"
-                          src={item.url}
-                        />
-                      </CardContent>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </aside>
+
+        <Carousel className="w-full max-w-2xl">
+          <CarouselPrevious />
+          <CarouselNext />
+          <CarouselContent>
+            {sliderData.map((item) => (
+              <CarouselItem key={item.id}>
+                <div className="p-1">
+                  <Card>
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <img className="rounded-xl shadow-2xl" src={item.url} />
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
       </main>
       <Footer />
     </div>
