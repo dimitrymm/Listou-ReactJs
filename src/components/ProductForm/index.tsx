@@ -163,7 +163,7 @@ export default function ProductForm() {
     }
   }
   return (
-    <>
+    <div className="flex flex-col md:flex-row">
       <Card className="max-w-2xl w-full bg-gray-300 ">
         <CardHeader>
           <CardTitle>Adicionar Produto</CardTitle>
@@ -263,7 +263,7 @@ export default function ProductForm() {
               <CardFooter className="flex justify-center ">
                 <Button
                   type="submit"
-                  className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-neutral-950 px-6 font-medium text-neutral-200 transition hover:scale-110"
+                  className="text-2xl md:text-sm group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-neutral-950 px-6 font-medium text-neutral-200 transition hover:scale-110"
                 >
                   <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
                     <div className="relative h-full w-8 bg-white/20"></div>
@@ -305,12 +305,12 @@ export default function ProductForm() {
                 )}
               />
 
-              <CardFooter className="flex justify-between">
+              <CardFooter className="flex justify-center">
                 <Button
                   type="submit"
                   disabled={isCategorySubmiting}
                   onClick={reload}
-                  className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-neutral-950 px-6 font-medium text-neutral-200 transition hover:scale-110"
+                  className="text-2xl md:text-sm group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-neutral-950 px-6 font-medium text-neutral-200 transition hover:scale-110"
                 >
                   <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
                     <div className="relative h-full w-8 bg-white/20"></div>
@@ -322,6 +322,6 @@ export default function ProductForm() {
           </Form>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 }
