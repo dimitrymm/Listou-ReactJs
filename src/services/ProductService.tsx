@@ -2,11 +2,14 @@ import type { Product } from "@/types/Product";
 import ProductMapper from "./mappers/ProductMapper";
 import HttpClient from "./utils/HttpClient";
 
+// const local = "http://localhost:3001";
+const remote = "https://shp-api.vercel.app";
+
 class ProductService {
   httpClient: HttpClient;
 
   constructor() {
-    this.httpClient = new HttpClient("http://localhost:3001");
+    this.httpClient = new HttpClient(remote);
   }
   async listProducts() {
     const products = await this.httpClient.get("/products");

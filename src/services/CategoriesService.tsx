@@ -2,11 +2,13 @@ import type { Category } from "@/types/Category";
 import CategoryMapper from "./mappers/CategoryMapper";
 import HttpClient from "./utils/HttpClient";
 
+// const local = "http://localhost:3001";
+const remote = "https://shp-api.vercel.app";
+
 class CategoriesService {
   httpClient: HttpClient;
   constructor() {
-    this.httpClient = new HttpClient("http://localhost:3001");
-    // "https://shp-api.vercel.app"
+    this.httpClient = new HttpClient(remote);
   }
   async listCategories() {
     const categories = await this.httpClient.get("/categories");
