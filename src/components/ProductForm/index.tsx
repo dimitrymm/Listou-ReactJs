@@ -88,10 +88,6 @@ export default function ProductForm() {
 
   const { categories, isLoadingCategories, reload } = context;
 
-  useEffect(() => {
-    loadCategories();
-  }, [loadCategories]);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -99,12 +95,6 @@ export default function ProductForm() {
     },
   });
 
-  const categoryForm = useForm<z.infer<typeof formCategorySchema>>({
-    resolver: zodResolver(formCategorySchema),
-    defaultValues: {
-      name: "",
-    },
-  });
   const categoryForm = useForm<z.infer<typeof formCategorySchema>>({
     resolver: zodResolver(formCategorySchema),
     defaultValues: {
