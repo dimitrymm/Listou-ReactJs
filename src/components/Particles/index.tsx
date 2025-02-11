@@ -1,19 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import {
-  type Container,
-  type ISourceOptions,
-  MoveDirection,
-  OutMode,
-} from "@tsparticles/engine";
+import { Container, ISourceOptions } from "@tsparticles/engine";
 // import { loadAll } from "@tsparticles/all"; // if you are going to use `loadAll`, install the "@tsparticles/all" package too.
 // import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
-import images from "@/assets/images/05.jpg";
 
-const ParticlesComponent = (props) => {
-  const [init, setInit] = useState(false);
+const ParticlesComponent = (props: { id: string | undefined }) => {
+  const [, setInit] = useState(false);
 
   // this should be run only once per application lifetime
   useEffect(() => {
@@ -58,7 +52,7 @@ const ParticlesComponent = (props) => {
         enable: false,
       },
       clear: true,
-      defaultThemes: {},
+
       delay: 0,
       fullScreen: {
         enable: true,
@@ -75,9 +69,8 @@ const ParticlesComponent = (props) => {
             mode: "push",
           },
           onDiv: {
-            selectors: {},
             enable: false,
-            mode: {},
+
             type: "circle",
           },
           onHover: {
@@ -141,7 +134,7 @@ const ParticlesComponent = (props) => {
           },
           push: {
             default: true,
-            groups: [],
+
             quantity: 4,
           },
           remove: {
@@ -194,7 +187,7 @@ const ParticlesComponent = (props) => {
           },
         },
       },
-      manualParticles: [],
+
       particles: {
         bounce: {
           horizontal: {
@@ -259,10 +252,8 @@ const ParticlesComponent = (props) => {
         effect: {
           close: true,
           fill: true,
-          options: {},
-          type: {},
         },
-        groups: [],
+
         move: {
           angle: {
             offset: 0,
@@ -299,7 +290,6 @@ const ParticlesComponent = (props) => {
               value: 0,
             },
             enable: false,
-            options: {},
           },
           outModes: {
             default: "out",
@@ -398,7 +388,6 @@ const ParticlesComponent = (props) => {
           velocityRate: 1,
         },
         destroy: {
-          bounds: {},
           mode: "none",
           split: {
             count: 1,
@@ -532,10 +521,9 @@ const ParticlesComponent = (props) => {
       },
       pauseOnBlur: true,
       pauseOnOutsideViewport: true,
-      responsive: [],
+
       smooth: false,
-      style: {},
-      themes: [],
+
       zLayers: 100,
       key: "parallax",
       name: "Parallax",

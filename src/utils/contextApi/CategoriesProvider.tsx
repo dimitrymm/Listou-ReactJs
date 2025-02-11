@@ -1,5 +1,4 @@
 import CategoriesService from "@/services/CategoriesService";
-import type { Category } from "@/types/Category";
 import {
   createContext,
   useCallback,
@@ -9,7 +8,7 @@ import {
 } from "react";
 
 interface CategoryContextType {
-  categories: Category[];
+  categories: any;
   isLoadingCategories: boolean;
   reload: () => Promise<void>;
   // deleteCategory:(id:number)=> Promise<void>
@@ -24,7 +23,7 @@ interface CategoryProviderProps {
 }
 
 export default function CategoryProvider({ children }: CategoryProviderProps) {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   const loadCategories = useCallback(async () => {

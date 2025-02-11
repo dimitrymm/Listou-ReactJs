@@ -9,7 +9,7 @@ import {
 } from "react";
 
 interface ProductsContextType {
-  products: Product[];
+  products: any;
   isLoading: boolean;
   reload: () => Promise<void>;
   deleteProduct: (id: number) => Promise<void>;

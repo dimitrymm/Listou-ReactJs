@@ -37,6 +37,7 @@ import ProductService from "@/services/ProductService";
 import { useToast } from "@/hooks/use-toast";
 import Spinner from "../Spinner";
 import { CategoryContext } from "@/utils/contextApi/CategoriesProvider";
+import type { Category } from "@/types/Category";
 import type { Product } from "@/types/Product";
 
 const formSchema = z.object({
@@ -101,11 +102,13 @@ export default function ProductForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmiting(true);
     try {
-      const product = {
+      const product: Product = {
         name: values.name,
         date: values.date,
         quantity: values.quantity,
-        category_id: values.category_name,
+        category: {
+          id: values.category_name,
+        },
       };
 
       await ProductService.createProduct(product);
@@ -133,7 +136,7 @@ export default function ProductForm() {
   async function onCategorySubmit(values: z.infer<typeof formCategorySchema>) {
     setIsCategorySubmiting(true);
     try {
-      const category = {
+      const category: Category = {
         name: values.name,
       };
 
@@ -227,7 +230,7 @@ export default function ProductForm() {
                             <SelectValue placeholder="Selecione" />
                           </SelectTrigger>
                           <SelectContent position="popper">
-                            {categories.map((category) => (
+                            {categories.map((category: Category) => (
                               <SelectItem
                                 key={category.id}
                                 value={

@@ -1,11 +1,13 @@
+import type { Category } from "@/types/Category";
+
 class CategoryMapper {
-  toPersistence(domainCategory) {
+  toPersistence(domainCategory: Category) {
     return {
       id: domainCategory.id,
       name: domainCategory.name,
     };
   }
-  toDomain(persistenceCategory) {
+  toDomain(persistenceCategory: { id: any; name: any }) {
     return {
       id: persistenceCategory.id,
       name: persistenceCategory.name,

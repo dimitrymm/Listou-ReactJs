@@ -78,7 +78,7 @@ export default function Statistics() {
     if (!productBeingDeleted) return;
     try {
       setIsLoadingDelete(true);
-      await deleteProduct(productBeingDeleted?.id);
+      await deleteProduct(productBeingDeleted!.id!);
 
       toast({
         title: "Produto Deletado com sucesso!",
@@ -123,7 +123,7 @@ export default function Statistics() {
               <Spinner />
             ) : (
               //Listagem de produtos
-              products?.map((product) => (
+              products?.map((product: Product) => (
                 <div key={product.id} className="p-4 max-w-lg">
                   <Card className="w-full">
                     <CardHeader className="pb-2">
@@ -179,45 +179,6 @@ export default function Statistics() {
                     </CardContent>
                   </Card>
                 </div>
-
-                // <CardContent
-                //   key={product.id}
-                //   className="m-1 p-4 shadow-lg rounded-md"
-                // >
-                //   <div className="flex items-center justify-between">
-                //     <div>
-                //       <div>
-                //         <strong className="mr-4">{product.name}</strong>
-                //         <span className="text-lg font-bold text-indigo-700 uppercase">
-                //           {product.category.name}
-                //         </span>
-                //       </div>
-                //       <div>
-                //         <span>{product.quantity}Un. </span>
-                //         <span>Em: {FormatDate(product.date)}</span>
-                //       </div>
-                //     </div>
-                //     <div>
-                //       <Dialog>
-                //         <DialogTrigger asChild>
-                //           <Button
-                //             onClick={() => handleDeleteProduct(product)}
-                //             variant={"destructive"}
-                //             className="hover:bg-red-800"
-                //           >
-                //             <TrashIcon className="size-6" />
-                //           </Button>
-                //         </DialogTrigger>
-                //         <DialogContent className="max-w-xs">
-                //           <Modal
-                //             onConfirm={handleConfirmDeleteProduct}
-                //             isLoading={isLoadingDelete}
-                //           />
-                //         </DialogContent>
-                //       </Dialog>
-                //     </div>
-                //   </div>
-                // </CardContent>
               ))
             )}
           </Card>
@@ -267,7 +228,7 @@ export default function Statistics() {
                       <div>
                         <strong className="mr-4">{product.name}</strong>
                         <span className="text-lg font-bold text-indigo-700 uppercase">
-                          {product.category_name}
+                          {product.category.name}
                         </span>
                       </div>
                       <div>
