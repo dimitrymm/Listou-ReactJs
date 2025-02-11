@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
+import ProductCard from "@/components/ProductCard";
 import Spinner from "@/components/Spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -112,9 +113,20 @@ export default function Statistics() {
                 <Button
                   onClick={reload}
                   variant={"outline"}
-                  className="hover:bg-blue-600"
+                  className="group relative inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-neutral-950 font-medium text-neutral-200 transition-all duration-300 hover:w-32"
                 >
-                  <ReloadIcon />
+                  <div className="inline-flex whitespace-nowrap opacity-0 transition-all duration-200 group-hover:-translate-x-3 group-hover:opacity-100">
+                    Atualizar
+                  </div>
+                  <div className="absolute right-3.5">
+                    <ReloadIcon />
+                    <path
+                      d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                    ></path>
+                  </div>
                 </Button>
               </CardTitle>
             </CardHeader>
@@ -124,15 +136,15 @@ export default function Statistics() {
             ) : (
               //Listagem de produtos
               products?.map((product: Product) => (
-                <div key={product.id} className="p-4 max-w-lg">
+                <div key={product.id} className="p-2 max-w-lg">
                   <Card className="w-full">
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle className="text-xl font-bold">
+                          <CardTitle className="text-xl font-bold ">
                             {product.name}
                           </CardTitle>
-                          <Badge variant="secondary" className="mt-2">
+                          <Badge variant="default" className="">
                             {product.category.name}
                           </Badge>
                         </div>
@@ -142,7 +154,7 @@ export default function Statistics() {
                               onClick={() => handleDeleteProduct(product)}
                               variant="ghost"
                               size="icon"
-                              className="text-red-500 hover:text-red-700 hover:bg-red-400"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-400 hover:scale-105 transition-transform"
                             >
                               <TrashIcon className="size-6" />
                             </Button>
@@ -219,48 +231,56 @@ export default function Statistics() {
             ) : (
               //listagem de produtos filtrados por mes
               filteredProducts?.map((product) => (
-                <CardContent
-                  key={product.id}
-                  className="m-1 p-4 shadow-lg rounded-md"
-                >
-                  <div className="flex items-center gap-4 justify-between">
-                    <div>
-                      <div>
-                        <strong className="mr-4">{product.name}</strong>
-                        <span className="text-lg font-bold text-indigo-700 uppercase">
-                          {product.category.name}
-                        </span>
-                      </div>
-                      <div>
-                        <span>{product.quantity}Un. </span>
-                        <span>Em: {FormatDate(product.date)}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            onClick={() => handleDeleteProduct(product)}
-                            variant={"destructive"}
-                            className="hover:bg-red-800"
-                          >
-                            {isLoadingDelete ? (
-                              <Spinner />
-                            ) : (
-                              <TrashIcon className="size-6" />
-                            )}
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-xs">
-                          <Modal
-                            onConfirm={handleConfirmDeleteProduct}
-                            isLoading={isLoadingDelete}
-                          />
-                        </DialogContent>
-                      </Dialog>
-                    </div>
-                  </div>
-                </CardContent>
+                // <CardContent
+                //   key={product.id}
+                //   className="m-1 p-4 shadow-lg rounded-md"
+                // >
+                //   <div className="flex items-center gap-4 justify-between">
+                //     <div>
+                //       <div>
+                //         <strong className="mr-4">{product.name}</strong>
+                //         <span className="text-lg font-bold text-indigo-700 uppercase">
+                //           {product.category.name}
+                //         </span>
+                //       </div>
+                //       <div>
+                //         <span>{product.quantity}Un. </span>
+                //         <span>Em: {FormatDate(product.date)}</span>
+                //       </div>
+                //     </div>
+                //     <div>
+                //       <Dialog>
+                //         <DialogTrigger asChild>
+                //           <Button
+                //             onClick={() => handleDeleteProduct(product)}
+                //             variant={"destructive"}
+                //             className="hover:bg-red-800"
+                //           >
+                //             {isLoadingDelete ? (
+                //               <Spinner />
+                //             ) : (
+                //               <TrashIcon className="size-6" />
+                //             )}
+                //           </Button>
+                //         </DialogTrigger>
+                //         <DialogContent className="max-w-xs">
+                //           <Modal
+                //             onConfirm={handleConfirmDeleteProduct}
+                //             isLoading={isLoadingDelete}
+                //           />
+                //         </DialogContent>
+                //       </Dialog>
+                //     </div>
+                //   </div>
+                // </CardContent>
+                <div key={product.id} className="p-2 max-w-lg">
+                  <ProductCard
+                    product={product}
+                    handleDeleteProduct={handleDeleteProduct}
+                    handleConfirmDeleteProduct={handleConfirmDeleteProduct}
+                    isLoadingDelete={isLoadingDelete}
+                  />
+                </div>
               ))
             )}
           </Card>

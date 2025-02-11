@@ -51,6 +51,15 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+      keyframes: {
+        "zoom-out": {
+          "0%": { opacity: "1", transform: "scale(1)" },
+          "100%": { opacity: "0", transform: "scale(0)" },
+        },
+      },
+      animation: {
+        "zoom-out": "zoom-out 300ms ease-in-out forwards",
+      },
     },
   },
   plugins: ["tailwindcss-animate"],

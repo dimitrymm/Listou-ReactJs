@@ -145,7 +145,7 @@ export default function ProductForm() {
 
       await CategoriesService.createCategory(category);
       setIsCategorySubmiting(false);
-      reload;
+
       toast({
         title: "Categoria Adicionada",
         description: "",
@@ -260,56 +260,22 @@ export default function ProductForm() {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex justify-between">
-                <Button variant={"outline"}>Cancelar</Button>
-                <Button type="submit">Adicionar</Button>
-              </CardFooter>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-      {/* Form Category */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Categorias</CardTitle>
-          <CardDescription>Adicione a Categoria</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...categoryForm}>
-            <form
-              onSubmit={categoryForm.handleSubmit(onCategorySubmit)}
-              className=" space-y-6"
-            >
-              <FormField
-                control={categoryForm.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Categoria</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nome da Categoria" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Categoria que deseja Inserir
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <CardFooter className="flex justify-center">
+              <CardFooter className="flex justify-center ">
                 <Button
                   type="submit"
-                  className="w-full text-2xl p-10 md:p-5 md:text-sm md:w-fit "
-                  disabled={isSubmiting}
+                  className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-neutral-950 px-6 font-medium text-neutral-200 transition hover:scale-110"
                 >
-                  {isSubmiting ? <Spinner /> : <p>Adicionar</p>}
+                  <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                    <div className="relative h-full w-8 bg-white/20"></div>
+                  </div>
+                  Adicionar
                 </Button>
               </CardFooter>
             </form>
           </Form>
         </CardContent>
       </Card>
+
       {/* Form Category */}
       <Card>
         <CardHeader>
@@ -340,7 +306,14 @@ export default function ProductForm() {
               />
 
               <CardFooter className="flex justify-between">
-                <Button type="submit" disabled={isCategorySubmiting}>
+                <Button
+                  type="submit"
+                  disabled={isCategorySubmiting}
+                  className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-neutral-950 px-6 font-medium text-neutral-200 transition hover:scale-110"
+                >
+                  <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                    <div className="relative h-full w-8 bg-white/20"></div>
+                  </div>
                   {isCategorySubmiting ? <Spinner /> : <p>Adicionar</p>}
                 </Button>
               </CardFooter>

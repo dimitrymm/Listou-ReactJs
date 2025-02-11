@@ -19,25 +19,29 @@ export default function Header() {
     <header className="p-6 mx-auto flex justify-center items-center flex-col">
       <Breadcrumb className="mb-3">
         <BreadcrumbList className="">
-          <BreadcrumbItem>
-            <HomeIcon className="" />
-            <Link className="text-base flex items-center " to="/">
+          <BreadcrumbItem className="hover:text-black hover:scale-110 transition-transform">
+            <Link className="flex items-center" to="/">
+              <HomeIcon />
               Home
             </Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator>
             <SlashIcon />
           </BreadcrumbSeparator>
-          <BreadcrumbItem>
-            <BackpackIcon />
-            <Link to="/products">Produtos</Link>
+          <BreadcrumbItem className=" hover:text-black hover:scale-110 transition-transform ">
+            <Link className="flex items-center" to="/products">
+              <BackpackIcon />
+              Produtos
+            </Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator>
             <SlashIcon />
           </BreadcrumbSeparator>
-          <BreadcrumbItem>
-            <BarChartIcon />
-            <Link to="/statistics">Estatisticas</Link>
+          <BreadcrumbItem className="hover:text-black hover:scale-110 transition-transform">
+            <Link className="flex items-center" to="/statistics">
+              <BarChartIcon />
+              Estatisticas
+            </Link>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
