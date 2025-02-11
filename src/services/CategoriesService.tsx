@@ -1,16 +1,22 @@
+import type { Category } from "@/types/Category";
+import CategoryMapper from "./mappers/CategoryMapper";
 import HttpClient from "./utils/HttpClient";
+
+// const local = "http://localhost:3001";
+const remote = "https://shp-api.vercel.app";
 
 class CategoriesService {
   httpClient: HttpClient;
   constructor() {
-    this.httpClient = new HttpClient("https://shp-api.vercel.app");
-    // "http://localhost:3001"
+    this.httpClient = new HttpClient(remote);
   }
-  listCategories() {
-    return this.httpClient.get("/categories");
+  async listCategories() {
+    const categories = await this.httpClient.get("/categories");
+    return categories.map(CategoryMapper.toDomain);
   }
   createCategory(category: Category) {
-    return this.httpClient.post("/categories", { body: category });
+    const body = CategoryMapper.toPersistence(category);
+    return this.httpClient.post("/categories", { body });
   }
 }
 export default new CategoriesService();
